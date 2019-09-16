@@ -75,12 +75,12 @@ void usercontrol( void ) {
     // update your motors, etc.
     // ........................................................................
 
-    //Foward and Backwards Control
+    //-------------------------Foward and Backwards Control-------------------------
     LeftMotor.spin(vex::directionType::fwd, Controller1.Axis3.value(), velocityUnits::rpm);
     RightMotor.spin(vex::directionType::rev, Controller1.Axis2.value(), velocityUnits::rpm);
+
     
-    //Claw Arm Control
-    
+    //-------------------------------Claw Arm Control-------------------------------
     if(Controller1.ButtonL2.pressing()){
       ArmMotor.spin(vex::directionType:: fwd, double(50), velocityUnits:: pct);
       Arm2Motor.spin(vex::directionType:: fwd, double(-50),velocityUnits:: pct);
@@ -88,27 +88,35 @@ void usercontrol( void ) {
       ArmMotor.spin(vex::directionType:: rev, double(50), velocityUnits:: pct);
       Arm2Motor.spin(vex::directionType:: rev, double(-50),velocityUnits:: pct);
     } else{
-      ArmMotor.spin(vex::directionType:: rev, double(0.5), velocityUnits:: pct);
-      Arm2Motor.spin(vex::directionType:: rev, double(-0.5),velocityUnits:: pct);
+      ArmMotor.stop(brakeType:: hold);
+      Arm2Motor.stop(brakeType:: hold);
     }
-    //Cube Storage Motor
+
+    //------------------------------Cube Storage Motor------------------------------
     if(Controller1.ButtonR1.pressing()){
-      MiddleMotor.spin(vex::directionType:: fwd, double(15), velocityUnits:: pct);
+      MiddleMotor.spin(vex::directionType:: fwd, double(5), velocityUnits:: pct);
+      ClawMotor.spin(vex::directionType:: fwd, double(2), velocityUnits:: pct);
+      Claw2Motor.spin(vex::directionType:: fwd, double(-2),velocityUnits:: pct);
     } else if(Controller1.ButtonR2.pressing()){
-      MiddleMotor.spin(vex::directionType:: fwd, double(-15), velocityUnits:: pct);
+      MiddleMotor.spin(vex::directionType:: fwd, double(-5), velocityUnits:: pct);
+      ClawMotor.spin(vex::directionType:: rev, double(2), velocityUnits:: pct);
+      Claw2Motor.spin(vex::directionType:: rev, double(-2),velocityUnits:: pct);
     } else{
-      MiddleMotor.spin(vex::directionType:: fwd, double(.1), velocityUnits:: pct);
+      MiddleMotor.stop(brakeType:: hold);
+      ClawMotor.stop(brakeType::brake);
+      Claw2Motor.stop(brakeType::brake);
     }
 
-    
-
-    //Claw Motor Toggle
+    //-------------------------------Claw Motor Toggle-------------------------------
     if(Controller1.ButtonY.pressing()){
       ClawMotor.spin(vex::directionType:: fwd, double(100), velocityUnits:: pct);
       Claw2Motor.spin(vex::directionType:: fwd, double(-100),velocityUnits:: pct);
     } else if(Controller1.ButtonX.pressing()){
       ClawMotor.spin(vex::directionType:: fwd, double(0), velocityUnits::pct);
       Claw2Motor.spin(vex::directionType:: fwd, double(0), velocityUnits::pct);
+    } else if(Controller1.ButtonA.pressing()){
+      ClawMotor.spin(vex::directionType:: rev, double(50), velocityUnits::pct);
+      Claw2Motor.spin(vex::directionType:: rev, double(-50), velocityUnits::pct);
     }
 
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
